@@ -1,14 +1,17 @@
-ubInsights
-==========
+Sphinx-Needs viewer
+===================
 
-Quick & dirty test app to show Sphinx-Needs json data as a webpage.
+Online data viewer to analyze Sphinx-Needs json data.
 
 Based on streamlit.io
 
+**See it in action und use it** via: https://sphinx-needs-viewer.streamlit.app/
+
 Install
 -------
-pip install streamlit
-pip install streamlit-agraph
+``pip install streamlit``
+
+``pip install streamlit-agraph``
 
 
 Run

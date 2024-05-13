@@ -22,16 +22,15 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        "Get Help": "https://www.extremelycoolapp.com/help",
-        "Report a bug": "https://www.extremelycoolapp.com/bug",
-        "About": "# This is a header. This is an *extremely* cool app!",
+        "Report a bug": "https://github.com/useblocks/sphinx-needs-viewer",
     },
 )
 st.sidebar.image("https://sphinx-needs.readthedocs.io/en/latest/_images/sphinx-needs-logo-bg.png")
 
 st.sidebar.markdown("""
 ## needs.json Viewer
-This is a data viewer for the Traceability tool [Sphinx-Needs](https://sphinx-needs.readthedocs.io)
+This is a data viewer for the Traceability tool [Sphinx-Needs](https://sphinx-needs.readthedocs.io).
+The source code is available on [GitHub](https://github.com/useblocks/sphinx-needs-viewer) under GPL-3.0.
 
 ## Config
 """)
@@ -72,49 +71,58 @@ for key, need in needs_data_reduced.items():
 st.markdown(f"Data source: [{needs_url}]({needs_url})")
 
 # Table
-st.subheader('Table')
-st.markdown(f"Showing **{max_needs}** need objects:")
-st.dataframe(needs_data_configured, use_container_width=True)
+if st.sidebar.checkbox('Show table', True):
+    st.markdown('## Table')
+    st.markdown(f"Showing **{max_needs}** need objects:")
+    st.dataframe(needs_data_configured, use_container_width=True)
 
 # FLOWCHART
-nodes = []
-edges = []
+if st.sidebar.checkbox('Show flowchart', True):
+    nodes = []
+    edges = []
 
-for key, need in needs_data_reduced.items():
+    for key, need in needs_data_reduced.items():
 
-    nodes.append( Node(id=key,
-                    label=need["title"],
-                    size=25))
+        nodes.append( Node(id=key,
+                        label=need["title"],
+                        size=25))
 
-    for link in need["links"]:
-        if link in needs_data_reduced.keys():
-            edges.append( Edge(source=key,   # noqa: PERF401
-                            label="links",
-                            target=link,
-                            ))
-config = Config(width=1000,
-                height=500,
-                directed=True, 
-                physics=True, 
-                hierarchical=False,
-                # **kwargs
-                )
+        for link in need["links"]:
+            if link in needs_data_reduced.keys():
+                edges.append( Edge(source=key,   # noqa: PERF401
+                                label="links",
+                                target=link,
+                                ))
+    config = Config(width=1000,
+                    height=500,
+                    directed=True, 
+                    physics=True, 
+                    hierarchical=False,
+                    # **kwargs
+                    )
 
-st.markdown("""
+    st.markdown("""
 ## FlowChart
-Use **mouse wheel** to zoom in/out.
-""")
-return_value = agraph(nodes=nodes, 
-                      edges=edges, 
-                      config=config)
+Use **mouse wheel** to zoom in/out.""")
+    return_value = agraph(nodes=nodes, 
+                        edges=edges, 
+                        config=config)
 
 # Data Tree
-if st.sidebar.checkbox('Show data tree'):
-    st.subheader('Data tree')
+if st.sidebar.checkbox('Show data tree', False):
+    st.markdown('## Data tree')
     st.json(needs_data_configured, expanded=False)
 
 # Raw data code
-if st.sidebar.checkbox('Show json raw data'):
-    st.subheader('Raw data')
+if st.sidebar.checkbox('Show json raw data', False):
+    st.markdown('## Raw data')
     needs_data_configured_string = json.dumps(needs_data_configured, indent=4)
     st.code(needs_data_configured_string, "json")
+
+
+# Know Bugs text
+st.sidebar.markdown("""
+## Known bugs/problems
+The data gets not prepared correctly for some data elements.
+This may result in errors when adding options to the table.
+""")
