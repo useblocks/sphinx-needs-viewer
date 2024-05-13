@@ -58,7 +58,7 @@ if needs_data_reduced:
     needs_data_keys = list(needs_data_reduced.values())[0].keys()
 
     selected_options = st.sidebar.multiselect(
-        "**Options to show on table**",
+        "**Options to show**",
         needs_data_keys,
         NEEDS_OPTIONS_DEFAULT,
     )
@@ -124,5 +124,5 @@ if st.sidebar.checkbox('Show json raw data', False):
 st.sidebar.markdown("""
 ## Known bugs/problems
 The data gets not prepared correctly for some data elements.
-This may result in errors when adding options to the table.
+This may result in errors when selecting some additional options.
 """)
