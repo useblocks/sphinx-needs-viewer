@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sphinx-needs-viewer"
+version = "2020.0.0"
+dependencies = [
+  "streamlit",
+  "streamlit-agraph"
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Daniel Woste", email = "daniel.woste@useblocks.com"},
+]
+maintainers = [
+  {name = "Daniel Woste", email = "daniel.woste@useblocks.com"},
+]
+description = "A Online viewer for Sphinx-Needs data"
+readme = "README.rst"
+license = {file = "LICENSE"}
+keywords = ["sphinx-needs", "sphinx", "streamlit"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
