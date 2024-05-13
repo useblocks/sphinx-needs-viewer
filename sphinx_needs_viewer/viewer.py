@@ -15,7 +15,7 @@ def get_needs_data(needs_url):  # noqa: D103
     with urllib.request.urlopen(needs_url) as url:  # noqa: S310
         return json.load(url)
 
-
+# Page config
 st.set_page_config(
     page_title="Sphinx-Needs viewer",
     page_icon="📊",
@@ -43,7 +43,7 @@ try:
 except Exception:
     msg.toast("Can't fetch data from provided URL!", icon="⚠")
     sys.exit(0)
-msg.toast("Fetching done!", icon="🎉")
+msg.toast("Fetching data done!", icon="🎉")
 
 needs_data = needs_raw_data["versions"]["2.1.0"]["needs"]
 
