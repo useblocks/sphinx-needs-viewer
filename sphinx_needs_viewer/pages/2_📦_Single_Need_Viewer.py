@@ -60,3 +60,11 @@ link: https://sphinx-needs.readthedocs.io/en/latest/{need["docname"]}.html#{need
 """)
 
     st.dataframe(need, use_container_width=True)
+
+# Remove streamlit banner
+hide_streamlit_style = """
+            <style>
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
