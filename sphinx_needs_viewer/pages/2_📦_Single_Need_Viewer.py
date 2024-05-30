@@ -12,13 +12,19 @@ NEEDS_URL = "https://sphinx-needs.readthedocs.io/en/latest/needs.json"
 def get_needs_data(needs_url):  # noqa: D103
     with urllib.request.urlopen(needs_url) as url:  # noqa: S310
         return json.load(url)
-    
+
+url_params = st.query_params
+initial_sidebar_state = "auto"
+if "no_sidebar" in url_params.keys():
+    initial_sidebar_state = "collapsed"
+
+
 # Page config
 st.set_page_config(
     page_title="Single Need Viewer",
     page_icon="📦",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state=initial_sidebar_state,
     menu_items={
         "Report a bug": "https://github.com/useblocks/sphinx-needs-viewer",
     },
@@ -26,7 +32,6 @@ st.set_page_config(
 
 needs_url = st.text_input("**needs.json URL**", NEEDS_URL)
 need_ids = get_needs_ids(needs_url)
-url_params = st.query_params
 selected_id_index = 0
 if "id" in url_params:
     selectd_id = url_params['id']
