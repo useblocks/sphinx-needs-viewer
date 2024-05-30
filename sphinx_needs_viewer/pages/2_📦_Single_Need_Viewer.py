@@ -65,6 +65,8 @@ link: https://sphinx-needs.readthedocs.io/en/latest/{need["docname"]}.html#{need
 hide_streamlit_style = """
             <style>
             footer {visibility: hidden;}
+            body {background-color: transparent !important;}
+            div.stApp {background-color: transparent !important;}
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
