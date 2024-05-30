@@ -33,33 +33,63 @@ st.set_page_config(
 # needs_url = st.text_input("**needs.json URL**", NEEDS_URL)
 needs_url = NEEDS_URL
 need_ids = get_needs_ids(needs_url)
-selected_id_index = 0
+
+if 'selected_id_index' not in st.session_state:
+    st.session_state.selected_id_index = 0
+
 if "id" in url_params:
     selectd_id = url_params['id']
     try:
-        selected_id_index = list(need_ids).index(selectd_id)
+        st.session_state.selected_id_index = list(need_ids).index(selectd_id)
     except ValueError:
-        selected_id_index = 0 # ID not found
+        st.session_state.selected_id_index = 0 # ID not found
 
-need_id = option = st.selectbox(
-    "Needs ID",need_ids, index=selected_id_index)
-need = get_need(needs_url, need_id)
+def next_need():
+    st.session_state.selected_id_index += 1
+def prior_need():
+    if st.session_state.selected_id_index > 0:
+        st.session_state.selected_id_index -= 1
 
+col1, col2 = st.columns([1,3], gap="large")
 
-if not need:
-    st.write(f"Need with ID {need_id}  ot found")
-else:
+with col1:
+    if st.session_state.selected_id_index >= len(need_ids)-1:
+        st.session_state.selected_id_index = len(need_ids) -1
+    need_id = option = st.selectbox(
+        "Select Need:",need_ids, index=st.session_state.selected_id_index)
+    st.session_state.selected_id_index = list(need_ids).index(need_id)
+    subcol1, subcol2 = st.columns(2)
+    with subcol1:
+        st.button("prior need", type="secondary", on_click=prior_need)
+    with subcol2:
+        st.button("next need", type="secondary", on_click=next_need)
+
+    need = get_need(needs_url, need_id)
+
+with col1:
     st.markdown(f"""
+status: **{need["status"]}** \\
+links: {" ,".join("**"+x+"**" for x in need["links"])} \\
+tags: {" ,".join("**"+x+"**" for x in need["tags"])}
+
+doc:    **{need["docname"]}{need["doctype"]}** \\
+sections: {" > ".join("**"+x+"**" for x in need["sections"])}
+
+
+[Open Need in source documentation](https://sphinx-needs.readthedocs.io/en/latest/{need["docname"]}.html#{need["id"]})
+""")
+
+with col2:
+    if not need:
+        st.write(f"Need with ID {need_id}  ot found")
+    else:
+        st.markdown(f"""
 ## {need["id"]}: {need["title"]}
-status: **{need["status"]}**
-
-doc: **{need["docname"]}{need["doctype"]}**
-
-link: https://sphinx-needs.readthedocs.io/en/latest/{need["docname"]}.html#{need["id"]}
-
 {need["description"]}
 """)
 
+    st.divider()
+    st.write("**Complete need data**")
     st.dataframe(need, use_container_width=True)
 
 # Remove streamlit banner
