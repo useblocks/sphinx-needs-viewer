@@ -55,14 +55,15 @@ col1, col2 = st.columns([1,3], gap="large")
 with col1:
     if st.session_state.selected_id_index >= len(need_ids)-1:
         st.session_state.selected_id_index = len(need_ids) -1
-    need_id = option = st.selectbox(
-        "Select Need:",need_ids, index=st.session_state.selected_id_index)
-    st.session_state.selected_id_index = list(need_ids).index(need_id)
-    subcol1, subcol2 = st.columns(2)
+    subcol1, subcol2, subcol3 = st.columns([5,1,1])
     with subcol1:
-        st.button("prior need", type="secondary", on_click=prior_need)
+        need_id = option = st.selectbox(
+            "2",need_ids, index=st.session_state.selected_id_index, label_visibility="collapsed")
+        st.session_state.selected_id_index = list(need_ids).index(need_id)
     with subcol2:
-        st.button("next need", type="secondary", on_click=next_need)
+        st.button("\-", type="secondary", on_click=prior_need)
+    with subcol3:
+        st.button("\+", type="secondary", on_click=next_need)
 
     need = get_need(needs_url, need_id)
 
@@ -76,7 +77,8 @@ doc:    **{need["docname"]}{need["doctype"]}** \\
 sections: {" > ".join("**"+x+"**" for x in need["sections"])}
 
 
-[Open Need in source documentation](https://sphinx-needs.readthedocs.io/en/latest/{need["docname"]}.html#{need["id"]})
+[Open Need](https://sphinx-needs.readthedocs.io/en/latest/{need["docname"]}.html#{need["id"]}) | 
+[Edit Need](https://github.com/useblocks/sphinx-needs/edit/master/docs/{need["docname"]}{need["doctype"]})
 """)
 
 with col2:
