@@ -30,7 +30,8 @@ st.set_page_config(
     },
 )
 
-needs_url = st.text_input("**needs.json URL**", NEEDS_URL)
+# needs_url = st.text_input("**needs.json URL**", NEEDS_URL)
+needs_url = NEEDS_URL
 need_ids = get_needs_ids(needs_url)
 selected_id_index = 0
 if "id" in url_params:
