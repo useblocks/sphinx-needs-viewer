@@ -4,7 +4,7 @@ import urllib.request
 import streamlit as st
 from streamlit_agraph import agraph, Node, Edge, Config
 
-from sphinx_needs_viewer.util  import get_need, get_needs_ids
+from util import get_need, get_needs_ids
 
 NEEDS_URL = "https://sphinx-needs.readthedocs.io/en/latest/needs.json"
 
